@@ -3,8 +3,7 @@ import glob
 from datetime import datetime, timedelta
 import xlwings as xw
 import threading
-import sys
-from typing import List, Dict, Optional, Tuple, Any
+from typing import List, Optional,  Any
 
 class ExcelProcessor:
     def __init__(self):
