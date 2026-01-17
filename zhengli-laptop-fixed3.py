@@ -23,8 +23,8 @@ class ExcelProcessor:
                 "mapping": {1: 1, 3: 2, 4: 3, 8: 4, 2: 5, 6: 6}
             },
             "pattern2": {
-                "headers": {1: "日期", 5: "销往单位", 9: "药品名称", 11: "规格", 12: "数量", 14: "批号"},
-                "mapping": {1: 1, 9: 2, 11: 3, 14: 4, 5: 5, 12: 6}
+                "headers": {1: "日期", 5: "销往单位", 10: "药品名称", 12: "规格", 13: "数量", 15: "批号"},
+                "mapping": {1: 1, 10: 2, 12: 3, 15: 4, 5: 5, 13: 6}
             },
             "pattern3": {
                 "headers": {1: "销售日期", 4: "销售商", 6: "商品名称", 7: "商品规格", 10: "数量", 13: "批号"},
@@ -442,9 +442,10 @@ class ExcelProcessor:
                 print(f"处理率: {self.processed_rows/self.total_rows*100:.2f}%")
                 if self.processed_rows < self.total_rows:
                     print(f"警告：有 {self.total_rows - self.processed_rows} 行数据未被处理")
-            
-            # 5. 清空work_dir文件夹内的xlsx和xls文件
-            self.cleanup_work_dir()
+                        
+            # 5. 只有在全部数据处理成功的时候才清空work_dir文件夹内的xlsx和xls文件
+            if (self.total_rows - self.processed_rows) == 0:
+                self.cleanup_work_dir()
             
             # 6. 打开输出目录
             try:
@@ -458,6 +459,7 @@ class ExcelProcessor:
             print(f"程序运行出错: {e}")
             import traceback
             traceback.print_exc()
+            print("由于发生错误，未清理工作目录中的Excel文件")
         
         finally:
             # 确保Excel应用关闭
